@@ -22,7 +22,7 @@ then
   envsubst < ../_docker_setup/$RAILS_ENV/nginx.conf > containers/$RAILS_ENV/nginx.conf
   # Add nulldb gem to allow creating assets without a db connection
   # read: http://blog.zeit.io/use-a-fake-db-adapter-to-play-nice-with-rails-assets-precompilation/"
-  echo "gem 'activerecord-nulldb-adapter'" >> Gemfile
+  # echo "gem 'activerecord-nulldb-adapter'" >> Gemfile
   docker-compose up -d
 else
   echo "development"
