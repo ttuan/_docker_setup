@@ -23,6 +23,7 @@ then
   # read: http://blog.zeit.io/use-a-fake-db-adapter-to-play-nice-with-rails-assets-precompilation/"
   echo "gem 'activerecord-nulldb-adapter'" >> Gemfile
   docker-compose run app bundle install --without development test -j4
+  docker-compose up -d
 else
   echo "development"
   docker-compose build
