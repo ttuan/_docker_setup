@@ -3,6 +3,7 @@ set -e
 if [[ -a /tmp/puma.pid ]]; then
   rm /tmp/puma.pid
 fi
+bundle install --without development test -j4
 bundle exec rake db:create
 bundle exec rake db:migrate
 if [[ \$RAILS_ENV == "production" ]]; then
