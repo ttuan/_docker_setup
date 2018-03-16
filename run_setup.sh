@@ -7,6 +7,7 @@ envsubst < ../_docker_setup/$RAILS_ENV/Dockerfile > containers/$RAILS_ENV/Docker
 envsubst < ../_docker_setup/$RAILS_ENV/docker-compose.yml > containers/${RAILS_ENV}/docker-compose.yml
 envsubst < ../_docker_setup/$RAILS_ENV/entrypoint > containers/${RAILS_ENV}/entrypoint
 cp ../_docker_setup/scripts/wait-for-it.sh containers/scripts/wait-for-it.sh
+cp ../_docker_setup/scripts/deploy.sh containers/scripts/deploy.sh
 chmod +x containers/${RAILS_ENV}/entrypoint
 chmod +x containers/scripts/wait-for-it.sh
 
