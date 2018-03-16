@@ -1,0 +1,43 @@
+version: '2'
+services:
+  nginx:
+    image: nginx:1.11.9
+    volumes_from:
+      - app
+    depends_on:
+      - app
+    ports:
+      - 80:80
+  db:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    env_file:
+      - containers/${RAILS_ENV}/.env
+  app:
+    build:
+      context: .
+      dockerfile: containers/${RAILS_ENV}/Dockerfile
+    env_file:
+      - containers/${RAILS_ENV}/.env
+    command: containers/scripts/wait-for-it.sh db:3306 -- containers/${RAILS_ENV}/entrypoint
+    volumes:
+      - assets:/usr/app/${APP_NAME}/public/assets
+      - nginx_config:/etc/nginx/conf.d
+    volumes_from:
+      - box
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+  box:
+    image: busybox
+    volumes:
+      - /box
+volumes:
+  assets:
+    external: false
+  data:
+    external: false
+  nginx_config:
+    external: false

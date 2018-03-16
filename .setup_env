@@ -1,0 +1,6 @@
+export APP_NAME=assistant-api
+export RAILS_ENV=development
+export DB_PASSWORD=toor
+export RAILS_ROOT=/usr/app/${APP_NAME}
+export SERVER_NAME="${APP_NAME}.prod"
+export SECRET_KEY_BASE=48e264733165a45563e2de1de93a7182b95723a08d3379c5a462368294bc16786407c9a6f1d6308c1f2ee0bba84071e4af6d71df40492b36fb48b2e6186cc355
