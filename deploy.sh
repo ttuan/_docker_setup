@@ -1,5 +1,5 @@
 #!/bin/bash
 
 cd ../$APP_NAME
-git clone $REPO_URL
+git pull origin master
 docker-compose build app
