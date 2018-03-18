@@ -9,9 +9,9 @@ bundle exec rake db:migrate
 if [[ \$RAILS_ENV == "production" ]]; then
   # rake assets:precompile
   mkdir -p /etc/nginx/conf.d/
-  cp containers/${RAILS_ENV}/nginx.conf /etc/nginx/conf.d/default.conf
-  cp containers/${RAILS_ENV}/nginx.pem /etc/nginx/ssl/nginx.pem
-  cp containers/${RAILS_ENV}/key.pem /etc/nginx/ssl/key.pem
+  cp -rf containers/${RAILS_ENV}/nginx.conf /etc/nginx/conf.d/default.conf
+  cp -rf containers/${RAILS_ENV}/server.csr /etc/nginx/conf.d/server.csr
+  cp -rf containers/${RAILS_ENV}/server.key /etc/nginx/conf.d/server.key
 fi
 
 rails server -b 0.0.0.0 -P /tmp/puma.pid

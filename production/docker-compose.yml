@@ -1,13 +1,14 @@
 version: '2'
 services:
   nginx:
-    image: nginx:1.11.9
+    image: nginx:1.12.2
     volumes_from:
       - app
     depends_on:
       - app
     ports:
       - 80:80
+      - 443:443
   db:
     image: mysql:5.7
     ports:

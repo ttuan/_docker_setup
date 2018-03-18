@@ -20,8 +20,8 @@ ln -s containers/${RAILS_ENV}/docker-compose.yml
 if [ "$RAILS_ENV" == "production" ]
 then
   envsubst < ../_docker_setup/$RAILS_ENV/nginx.conf > containers/$RAILS_ENV/nginx.conf
-  cp ../_docker_setup/$RAILS_ENV/nginx.pem containers/$RAILS_ENV/nginx.pem
-  cp ../_docker_setup/$RAILS_ENV/key.pem containers/$RAILS_ENV/key.pem
+  cp ../_docker_setup/$RAILS_ENV/server.csr containers/$RAILS_ENV/server.csr
+  cp ../_docker_setup/$RAILS_ENV/server.key containers/$RAILS_ENV/server.key
   # Add nulldb gem to allow creating assets without a db connection
   # read: http://blog.zeit.io/use-a-fake-db-adapter-to-play-nice-with-rails-assets-precompilation/"
   # echo "gem 'activerecord-nulldb-adapter'" >> Gemfile
