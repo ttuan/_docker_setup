@@ -1,18 +1,29 @@
-FROM ruby:2.4.1
-MAINTAINER ttuan <tuantv.nhnd@gmail.com>
-ENV RAILS_ROOT=/usr/app/${APP_NAME}
-ENV RAILS_ENV=${RAILS_ENV}
+FROM ruby:2.5.0-slim-stretch
+MAINTAINER tuant <tran.van.tuan@framgia.com>
 
-# Install essential Linux packages
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev postgresql-client libproj-dev nodejs less
+ENV LANG C.UTF-8
 
-# Dependencies for rgeo
-RUN apt-get --no-install-recommends -y install libgeos-dev libproj-dev
-# Add libgeos symlinks for rgeo gem to be able to find it
-RUN ln -sf /usr/lib/libgeos-3.4.2.so /usr/lib/libgeos.so && ln -sf /usr/lib/libgeos-3.4.2.so /usr/lib/libgeos.so.1
+ENV APP_DIR /app
+RUN mkdir -p $APP_DIR
+WORKDIR $APP_DIR
 
-RUN mkdir -p $RAILS_ROOT/tmp/pids
-WORKDIR $RAILS_ROOT
-ENV BUNDLE_PATH /box
-COPY . .
-EXPOSE 3000
+RUN apt-get update --fix-missing
+RUN apt-get install -y --no-install-recommends --allow-unauthenticated \
+build-essential curl git libmariadbclient-dev-compat gnupg imagemagick
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -yq nodejs
+RUN apt-get clean
+
+# RUN cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+
+COPY Gemfile /cache/Gemfile
+COPY Gemfile.lock /cache/Gemfile.lock
+
+RUN echo "gem: --no-rdoc --no-ri" > ~/.gemrc
+RUN cd /cache && bundle install -j4
+
+COPY . $APP_DIR
+
+RUN chmod +x $APP_DIR/scripts/*
+RUN chmod +x $APP_DIR/bin/*
+
+CMD ["scripts/server"]

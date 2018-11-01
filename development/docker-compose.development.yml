@@ -1,0 +1,40 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: scripts/server
+    volumes:
+      - .:/app
+      - bundle:/bundle
+    ports:
+      - 3000:3000
+    links:
+      - db
+    env_file: .env
+    environment:
+      - DATABASE_HOSTNAME=db
+    stdin_open: true
+    tty: true
+  db:
+    image: mysql:5.7
+    entrypoint:
+      sh -c "
+      echo 'CREATE DATABASE IF NOT EXISTS coupon_web_test; CREATE DATABASE IF NOT EXISTS coupon_web_development; GRANT ALL ON `coupon_web_test`.* TO `coupon`@`%`; GRANT ALL ON `coupon_web_development`.* TO `coupon`@`%`;' > /docker-entrypoint-initdb.d/init.sql;
+      /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-file-format=Barracuda --innodb-file-per-table=true --innodb-large-prefix=true
+      "
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - TZ=Japan
+      - MYSQL_USER=coupon
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=root
+volumes:
+  db-data:
+    driver: local
+  bundle:
+    driver: local
